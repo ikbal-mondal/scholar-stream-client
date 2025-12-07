@@ -7,8 +7,6 @@ import {
   CreditCard,
   School,
   CheckCircle,
-  XCircle,
-  Clock,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -25,10 +23,17 @@ export default function MyApplications() {
   const [loading, setLoading] = useState(true);
   const [viewItem, setViewItem] = useState(null);
 
+  // ----------- REVIEW STATES -----------
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewApp, setReviewApp] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+  // -------------------------------------
+
   useEffect(() => {
     if (backendUser?.email) loadApps();
   }, [backendUser?.email]);
-  console.log(apps);
 
   const loadApps = async () => {
     try {
@@ -42,6 +47,7 @@ export default function MyApplications() {
     }
   };
 
+  // DELETE APPLICATION
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: "Delete Application?",
@@ -55,6 +61,7 @@ export default function MyApplications() {
     loadApps();
   };
 
+  // START PAYMENT
   const startPayment = async (application) => {
     try {
       const id =
@@ -73,7 +80,7 @@ export default function MyApplications() {
     }
   };
 
-  // Convert image to BASE64
+  // Convert image URL → Base64
   const toBase64 = async (url) => {
     const res = await fetch(url);
     const blob = await res.blob();
@@ -84,11 +91,11 @@ export default function MyApplications() {
     });
   };
 
+  // DOWNLOAD PDF
   const downloadPdf = async (item) => {
     try {
       const form = item.formData || {};
 
-      // Convert images
       const uniBase64 = item.universityImage
         ? await toBase64(item.universityImage)
         : null;
@@ -99,69 +106,29 @@ export default function MyApplications() {
 
       const universityImg = uniBase64
         ? { image: uniBase64, width: 160, height: 80, margin: [0, 0, 0, 8] }
-        : { text: "University Image", style: "missingImage" };
+        : { text: "University Image Missing" };
 
       const userImg = userBase64
-        ? {
-            image: userBase64,
-            width: 70,
-            height: 70,
-            margin: [0, 0, 0, 0],
-            alignment: "right",
-          }
-        : { text: "User Photo", style: "missingImage" };
+        ? { image: userBase64, width: 70, height: 70, alignment: "right" }
+        : { text: "No Photo" };
 
-      // ICONS for fields
-      const fieldIcons = {
-        fullName: "👤",
-        email: "📧",
-        phone: "📞",
-        dob: "🎂",
-        previousDegree: "🎓",
-        cgpa: "⭐",
-        intake: "📅",
-        studyGap: "⏳",
-        appliedDegree: "📘",
-        major: "📖",
-        whyUniversity: "🏫",
-        country: "🌍",
-        city: "🏙️",
-        address: "📍",
-        zip: "🔢",
-      };
-
-      // Modern table rows with icons
       const dataRows = Object.entries(form).map(([key, value], i) => [
-        {
-          text: `${fieldIcons[key] || "•"}  ${key.replace(/([A-Z])/g, " $1")}`,
-          style: "fieldLabel",
-          fillColor: i % 2 === 0 ? "#F4F8FF" : "#FFFFFF",
-        },
-        {
-          text: String(value ?? "—"),
-          style: "fieldValue",
-          fillColor: i % 2 === 0 ? "#F4F8FF" : "#FFFFFF",
-        },
+        { text: key.replace(/([A-Z])/g, " $1"), bold: true },
+        { text: String(value ?? "—") },
       ]);
 
-      // ================================
-      //       DOCUMENT DESIGN
-      // ================================
       const docDefinition = {
         pageSize: "A4",
-        pageMargins: [30, 40, 30, 40],
-
         content: [
-          // HEADER
           {
             columns: [
               universityImg,
               {
                 stack: [
-                  { text: "REGISTRATION FORM", style: "headerTitle" },
+                  { text: "REGISTRATION FORM", fontSize: 18, bold: true },
                   {
                     text: new Date(item.applicationDate).toLocaleString(),
-                    style: "headerDate",
+                    color: "gray",
                   },
                 ],
                 alignment: "center",
@@ -170,120 +137,22 @@ export default function MyApplications() {
             ],
           },
 
-          {
-            canvas: [
-              {
-                type: "line",
-                x1: 0,
-                y1: 0,
-                x2: 525,
-                y2: 0,
-                lineWidth: 2,
-                color: "#4A90E2",
-              },
-            ],
-            margin: [0, 10, 0, 10],
-          },
-
-          // SCHOLARSHIP INFO
-          { text: item.scholarshipName, style: "scholarTitle" },
+          { text: "\n" },
+          { text: item.scholarshipName, bold: true, fontSize: 16 },
           {
             text: `${item.universityName} • ${item.universityCountry}`,
-            style: "scholarSub",
-          },
-          {
-            text: `Applied: ${new Date(item.applicationDate).toLocaleString()}`,
-            style: "scholarSub",
-            margin: [0, 0, 0, 10],
+            color: "gray",
           },
 
-          // SECTION TITLE
-          {
-            text: "PERSONAL INFORMATION",
-            style: "sectionHeader",
-          },
+          { text: "\nPERSONAL INFORMATION\n", bold: true },
 
-          // FORM DETAILS TABLE
           {
             table: {
-              widths: ["35%", "*"],
-              body: [["Field", "Details"], ...dataRows],
+              widths: ["30%", "*"],
+              body: [["Field", "Value"], ...dataRows],
             },
-            layout: {
-              fillColor: (row) => (row === 0 ? "#E3ECFF" : null),
-              hLineWidth: () => 0.6,
-              vLineWidth: () => 0.6,
-              hLineColor: () => "#CCC",
-              vLineColor: () => "#CCC",
-            },
-            margin: [0, 6, 0, 20],
-          },
-
-          // SIGNATURE FOOTER
-          {
-            columns: [
-              {
-                text: "________________________\nApplicant Signature",
-                alignment: "left",
-                margin: [0, 20, 0, 0],
-              },
-              {
-                text: "________________________\nAuthorized Signature",
-                alignment: "right",
-                margin: [0, 20, 0, 0],
-              },
-            ],
           },
         ],
-
-        // ================================
-        //          STYLES
-        // ================================
-        styles: {
-          headerTitle: {
-            fontSize: 20,
-            bold: true,
-            color: "#1A73E8",
-            margin: [0, 10, 0, 4],
-          },
-          headerDate: {
-            fontSize: 10,
-            color: "#555",
-          },
-          scholarTitle: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 0, 0, 2],
-          },
-          scholarSub: {
-            fontSize: 11,
-            color: "#666",
-            margin: [0, 0, 0, 3],
-          },
-          sectionHeader: {
-            fontSize: 13,
-            bold: true,
-            color: "white",
-            fillColor: "#4A90E2",
-            padding: 6,
-            margin: [0, 10, 0, 6],
-            alignment: "center",
-          },
-          fieldLabel: {
-            bold: true,
-            fontSize: 11,
-            margin: [4, 4, 4, 4],
-          },
-          fieldValue: {
-            fontSize: 11,
-            margin: [4, 4, 4, 4],
-          },
-          missingImage: {
-            fontSize: 10,
-            color: "gray",
-            italics: true,
-          },
-        },
       };
 
       pdfMake.createPdf(docDefinition).download(`application-${item._id}.pdf`);
@@ -292,9 +161,37 @@ export default function MyApplications() {
     }
   };
 
-  // ============================================================
-  // UI COMPONENT
-  // ============================================================
+  // -------------------- SUBMIT REVIEW --------------------
+  const submitReview = async () => {
+    if (!rating || comment.trim() === "")
+      return Swal.fire(
+        "Missing Fields",
+        "Please add rating & comment.",
+        "warning"
+      );
+
+    try {
+      const res = await api.post("/reviews", {
+        scholarshipId: reviewApp.scholarshipId,
+        universityName: reviewApp.universityName,
+        userName: backendUser.name,
+        userEmail: backendUser.email,
+        userImage: backendUser.photoURL,
+        ratingPoint: rating,
+        reviewComment: comment,
+      });
+
+      Swal.fire("Success", "Review submitted!", "success");
+      setShowReviewModal(false);
+      setRating(0);
+      setComment("");
+    } catch (err) {
+      Swal.fire("Error", "Could not submit review", "error");
+    }
+  };
+
+  // ---------------------------------------------------------
+
   const StatusPill = ({ status }) => {
     const colors = {
       approved: "bg-green-100 text-green-700",
@@ -316,13 +213,17 @@ export default function MyApplications() {
         className={`px-3 py-1 rounded-full text-xs font-semibold ${
           status === "paid"
             ? "bg-green-100 text-green-700"
-            : "bg-red-100 text-red-600"
+            : "bg-red-100 text-red-700"
         }`}
       >
         {status}
       </span>
     );
   };
+
+  // ===========================================================
+  // MAIN UI
+  // ===========================================================
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -338,30 +239,29 @@ export default function MyApplications() {
         <div className="space-y-5">
           {apps.map((app) => (
             <div
-              key={app._id?.$oid || app._id}
-              className="bg-white/80 backdrop-blur-md border border-gray-200 hover:shadow-lg transition shadow-sm p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5"
+              key={app._id}
+              className="bg-white border shadow-sm hover:shadow-lg transition p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-5"
             >
-              {/* LEFT SECTION */}
               {/* IMAGE */}
               <img
                 src={app.universityImage}
-                onError={(e) => (e.target.src = "/no-image.png")}
-                className="w-32 h-20 object-cover rounded-lg border shadow-sm"
+                className="w-32 h-20 object-cover rounded-lg border"
                 alt="University"
+                onError={(e) => (e.target.src = "/no-image.png")}
               />
 
+              {/* DETAILS */}
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-lg font-semibold">
                   <School size={20} className="text-purple-600" />
                   {app.scholarshipName}
                 </div>
 
-                <p className="text-gray-600 text-sm mt-1">
+                <p className="text-gray-600 text-sm">
                   {app.universityName} • {app.universityCountry}
                 </p>
 
-                {/* Status pills */}
-                <div className="flex gap-3 mt-3">
+                <div className="flex gap-3 mt-2">
                   <StatusPill status={app.applicationStatus} />
                   <PaymentPill status={app.paymentStatus} />
                 </div>
@@ -398,79 +298,117 @@ export default function MyApplications() {
                 >
                   <Trash2 size={18} />
                 </button>
+
+                {/* ⭐ ADD REVIEW BUTTON (ONLY WHEN APPROVED + PAID) */}
+                {app.paymentStatus === "paid" &&
+                  app.applicationStatus === "approved" && (
+                    <button
+                      onClick={() => {
+                        setReviewApp(app);
+                        setShowReviewModal(true);
+                      }}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition flex items-center gap-2"
+                    >
+                      <CheckCircle size={18} /> Add Review
+                    </button>
+                  )}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* VIEW MODAL */}
+      {/* ======================================================
+             VIEW MODAL
+      ====================================================== */}
       {viewItem && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white w-full max-w-4xl rounded-2xl shadow-xl p-6 relative overflow-auto max-h-[90vh]">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+          <div className="bg-white w-full max-w-4xl rounded-xl shadow-xl p-6 relative overflow-auto max-h-[90vh]">
             <button
               onClick={() => setViewItem(null)}
-              className="absolute right-4 top-3 text-2xl text-gray-500 hover:text-black"
+              className="absolute right-4 top-3 text-2xl"
             >
               ×
             </button>
 
-            {/* HEADER */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4">
-              <img
-                src={viewItem.universityImage}
-                className="w-full h-24 object-contain rounded-md"
-              />
-
-              <div className="text-center">
-                <h1 className="text-xl font-bold text-green-600">
-                  REGISTRATION FORM
-                </h1>
-                <p className="text-sm text-gray-500">
-                  {new Date(viewItem.applicationDate).toLocaleString()}
-                </p>
-              </div>
-
-              <div className="flex justify-end">
-                <img
-                  src={backendUser?.photoURL}
-                  className="w-20 h-20 rounded-full object-cover shadow"
-                />
-              </div>
-            </div>
-
-            <div className="h-[2px] bg-green-500 my-3"></div>
-
-            <h2 className="font-bold text-lg">{viewItem.scholarshipName}</h2>
-            <p className="text-sm text-gray-600">
-              {viewItem.universityName} • {viewItem.universityCountry}
-            </p>
+            <h1 className="text-xl font-bold text-center mb-3">
+              Application Details
+            </h1>
 
             {/* TABLE */}
-            <div className="mt-4 border rounded-lg overflow-hidden">
-              <table className="w-full text-sm">
-                <tbody>
-                  {Object.entries(viewItem.formData || {}).map(([k, v], i) => (
-                    <tr key={i} className={i % 2 ? "bg-gray-50" : "bg-white"}>
-                      <td className="font-semibold p-3 w-1/3 border text-gray-700 capitalize">
-                        {k.replace(/([A-Z])/g, " $1")}
-                      </td>
-                      <td className="p-3 border">{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <table className="w-full text-sm mt-4">
+              <tbody>
+                {Object.entries(viewItem.formData || {}).map(([k, v], i) => (
+                  <tr key={i} className={i % 2 ? "bg-gray-50" : "bg-white"}>
+                    <td className="font-semibold p-3 w-1/3 border capitalize">
+                      {k.replace(/([A-Z])/g, " $1")}
+                    </td>
+                    <td className="p-3 border">{v}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-            {/* BUTTONS */}
-            <div className="flex justify-center gap-4 mt-6">
+            <div className="text-center mt-5">
               <button
                 onClick={() => downloadPdf(viewItem)}
-                className="px-5 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition flex items-center gap-2"
+                className="px-5 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
               >
-                <DownloadCloud /> Download PDF
+                Download PDF
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================
+             REVIEW MODAL
+      ====================================================== */}
+      {showReviewModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+          <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md relative">
+            {/* Close Button */}
+            <button
+              className="absolute right-4 top-3 text-2xl text-gray-500 hover:text-black"
+              onClick={() => setShowReviewModal(false)}
+            >
+              ×
+            </button>
+
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Write a Review
+            </h2>
+
+            {/* Rating Stars */}
+            <div className="flex justify-center gap-2 mb-4">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={`cursor-pointer text-3xl ${
+                    star <= rating ? "text-yellow-500" : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            {/* Comment Input */}
+            <textarea
+              className="w-full border rounded-lg p-3 h-28 focus:ring outline-none"
+              placeholder="Write your comment..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+
+            {/* Submit Button */}
+            <button
+              onClick={submitReview}
+              className="mt-4 bg-green-600 text-white w-full py-2 rounded-lg hover:bg-green-700 transition"
+            >
+              Submit Review
+            </button>
           </div>
         </div>
       )}

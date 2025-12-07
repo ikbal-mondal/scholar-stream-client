@@ -30,6 +30,7 @@ import ApplicationSuccess from "../pages/Apply/ApplicationSuccess";
 import Unauthorized from "../pages/Auth/Unauthorized";
 import MyApplications from "../pages/Dashboard/Student/MyApplications";
 import MyPayments from "../pages/Dashboard/Student/MyPayments";
+import MyReviews from "../pages/Dashboard/Student/MyReviews";
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/my-payments",
         element: <MyPayments />,
+      },
+
+      {
+        path: "/dashboard/my-reviews",
+        element: <MyReviews />,
       },
     ],
   },
