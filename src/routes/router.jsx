@@ -31,6 +31,9 @@ import Unauthorized from "../pages/Auth/Unauthorized";
 import MyApplications from "../pages/Dashboard/Student/MyApplications";
 import MyPayments from "../pages/Dashboard/Student/MyPayments";
 import MyReviews from "../pages/Dashboard/Student/MyReviews";
+import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
+import ApplicationFeedback from "../pages/Dashboard/Moderator/ApplicationFeedback";
+import AllApplications from "../pages/Dashboard/Admin/AllApplications";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +118,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "all-applications",
+        element: (
+          <AdminRoute>
+            <AllApplications></AllApplications>
+          </AdminRoute>
+        ),
+      },
+      {
         path: "/dashboard/my-applications",
         element: <MyApplications />,
       },
@@ -126,6 +137,15 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/my-reviews",
         element: <MyReviews />,
+      },
+      {
+        path: "/dashboard/moderator/manage-applications",
+        element: <ManageApplications></ManageApplications>,
+      },
+
+      {
+        path: "/dashboard/moderator/feedback",
+        element: <ApplicationFeedback></ApplicationFeedback>,
       },
     ],
   },

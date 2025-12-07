@@ -49,7 +49,12 @@ const roleMenu = {
     { name: "My Reviews", path: "/dashboard/my-reviews", icon: <Star /> },
   ],
   Moderator: [
-    { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard /> },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <LayoutDashboard />,
+      end: true,
+    },
     {
       name: "Manage Applications",
       path: "/dashboard/moderator/manage-applications",
@@ -79,6 +84,11 @@ const roleMenu = {
       icon: <PlusSquare />,
     },
     { name: "Manage Users", path: "/dashboard/manage-users", icon: <Users /> },
+    {
+      name: "Manage Applications",
+      path: "/dashboard/all-applications",
+      icon: <FileText />,
+    },
     { name: "Analytics", path: "/dashboard/analytics", icon: <BarChart2 /> },
   ],
 };
