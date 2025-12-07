@@ -28,6 +28,7 @@ export default function MyApplications() {
   useEffect(() => {
     if (backendUser?.email) loadApps();
   }, [backendUser?.email]);
+  console.log(apps);
 
   const loadApps = async () => {
     try {
@@ -341,6 +342,14 @@ export default function MyApplications() {
               className="bg-white/80 backdrop-blur-md border border-gray-200 hover:shadow-lg transition shadow-sm p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5"
             >
               {/* LEFT SECTION */}
+              {/* IMAGE */}
+              <img
+                src={app.universityImage}
+                onError={(e) => (e.target.src = "/no-image.png")}
+                className="w-32 h-20 object-cover rounded-lg border shadow-sm"
+                alt="University"
+              />
+
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-lg font-semibold">
                   <School size={20} className="text-purple-600" />
@@ -357,14 +366,6 @@ export default function MyApplications() {
                   <PaymentPill status={app.paymentStatus} />
                 </div>
               </div>
-
-              {/* IMAGE */}
-              <img
-                src={app.universityImage}
-                onError={(e) => (e.target.src = "/no-image.png")}
-                className="w-32 h-20 object-cover rounded-lg border shadow-sm"
-                alt="University"
-              />
 
               {/* BUTTONS */}
               <div className="flex flex-wrap gap-3">
