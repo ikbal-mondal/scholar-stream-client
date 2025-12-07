@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@keyframes dropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-dropdown {
+    animation: dropdown 0.25s ease-out;
+}
+
+.input-modern {
+    @apply w-full px-4 py-3 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none;
+}
+
+.btn-primary {
+    @apply w-full bg-primary text-white rounded-xl shadow-md hover:bg-primary/90 transition;
+}
+
+.input-modern {
+    @apply w-full px-4 py-3 border rounded-xl shadow-sm border-gray-300 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200;
+}
+
+.btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-xl shadow hover:bg-primary/90 transition font-semibold;
+}
+
+.btn-secondary {
+    @apply border px-6 py-3 rounded-xl font-semibold bg-gray-100 hover:bg-gray-200 transition;
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.35s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
