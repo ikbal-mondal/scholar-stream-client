@@ -13,7 +13,7 @@ const Navbar = () => {
   // Determine dashboard route based on role
   const dashboardRoute =
     role === "Admin"
-      ? "/dashboard/admin"
+      ? "/dashboard"
       : role === "Moderator"
       ? "/dashboard/moderator"
       : "/dashboard";
