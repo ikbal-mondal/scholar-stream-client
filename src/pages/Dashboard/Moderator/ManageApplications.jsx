@@ -8,7 +8,6 @@ import {
   Mail,
   User,
   CreditCard,
-  Calendar,
 } from "lucide-react";
 import Swal from "sweetalert2";
 import AuthContext from "../../../context/AuthProvider";
@@ -16,11 +15,13 @@ import api from "../../../services/api";
 
 export default function ManageApplications() {
   const { backendUser } = useContext(AuthContext);
+  console.log("user", backendUser);
 
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [selectedApp, setSelectedApp] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [feedbackText, setFeedbackText] = useState("");
 
@@ -68,8 +69,9 @@ export default function ManageApplications() {
     }
   };
 
-  // OPEN FEEDBACK MODAL
+  // OPEN FEEDBACK MODAL — FIXED
   const openFeedbackModal = (app) => {
+    setShowDetailsModal(false); // CLOSE DETAILS modal
     setSelectedApp(app);
     setFeedbackText(app.feedback || "");
     setFeedbackModal(true);
@@ -116,7 +118,10 @@ export default function ManageApplications() {
     );
   };
 
+  // --------------------------------------------------
   // MAIN UI
+  // --------------------------------------------------
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Manage Applications</h1>
@@ -129,29 +134,25 @@ export default function ManageApplications() {
             <div
               key={a._id}
               className="
-        bg-white/80 backdrop-blur-sm border border-gray-200 
-        rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 
-        transition-all p-6 
-      "
+                bg-white/80 backdrop-blur-sm border border-gray-200 
+                rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 
+                transition-all p-6
+              "
             >
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* IMAGE SECTION */}
                 <div className="relative">
                   <img
                     src={a.universityImage}
-                    className="
-              w-full h-40 lg:h-full 
-              object-cover rounded-xl 
-              border shadow-sm
-            "
+                    className="w-full h-40 lg:h-full object-cover rounded-xl border shadow-sm"
                   />
                   <span
                     className="
-              absolute top-3 right-3 
-              bg-black/60 text-white 
-              text-xs px-3 py-1 rounded-full
-              backdrop-blur-sm
-            "
+                      absolute top-3 right-3 
+                      bg-black/60 text-white 
+                      text-xs px-3 py-1 rounded-full
+                      backdrop-blur-sm
+                    "
                   >
                     {a.universityCountry}
                   </span>
@@ -187,12 +188,7 @@ export default function ManageApplications() {
                       </div>
 
                       {a.feedback && (
-                        <p
-                          className="
-                    text-xs bg-purple-50 border border-purple-200 
-                    p-3 rounded-lg mt-3 italic text-gray-700
-                  "
-                        >
+                        <p className="text-xs bg-purple-50 border border-purple-200 p-3 rounded-lg mt-3 italic text-gray-700">
                           <strong>Moderator Feedback:</strong> {a.feedback}
                         </p>
                       )}
@@ -201,27 +197,32 @@ export default function ManageApplications() {
 
                   {/* ACTION BUTTONS */}
                   <div className="flex flex-wrap lg:flex-nowrap gap-3 mt-6">
+                    {/* DETAILS BUTTON FIXED */}
                     <button
-                      onClick={() => setSelectedApp(a)}
+                      onClick={() => {
+                        setSelectedApp(a);
+                        setShowDetailsModal(true);
+                      }}
                       className="
-                flex items-center justify-center gap-2 
-                px-4 py-2 w-full lg:w-auto 
-                border rounded-lg hover:bg-gray-50 
-                transition-all
-              "
+                        flex items-center justify-center gap-2 
+                        px-4 py-2 w-full lg:w-auto 
+                        border rounded-lg hover:bg-gray-50 
+                        transition-all
+                      "
                     >
                       <Eye size={16} /> Details
                     </button>
 
+                    {/* FEEDBACK BUTTON FIXED */}
                     <button
                       onClick={() => openFeedbackModal(a)}
                       className="
-                flex items-center justify-center gap-2 
-                px-4 py-2 w-full lg:w-auto
-                border border-purple-300 text-purple-700 
-                rounded-lg hover:bg-purple-50 
-                transition-all
-              "
+                        flex items-center justify-center gap-2 
+                        px-4 py-2 w-full lg:w-auto
+                        border border-purple-300 text-purple-700 
+                        rounded-lg hover:bg-purple-50 
+                        transition-all
+                      "
                     >
                       <MessageSquare size={16} /> Feedback
                     </button>
@@ -229,11 +230,11 @@ export default function ManageApplications() {
                     <button
                       onClick={() => updateStatus(a._id, "completed")}
                       className="
-                flex items-center justify-center gap-2 
-                px-4 py-2 w-full lg:w-auto
-                bg-green-600 text-white rounded-lg 
-                hover:bg-green-700 transition-all
-              "
+                        flex items-center justify-center gap-2 
+                        px-4 py-2 w-full lg:w-auto
+                        bg-green-600 text-white rounded-lg 
+                        hover:bg-green-700 transition-all
+                      "
                     >
                       <CheckCircle size={16} /> Complete
                     </button>
@@ -241,11 +242,11 @@ export default function ManageApplications() {
                     <button
                       onClick={() => updateStatus(a._id, "rejected")}
                       className="
-                flex items-center justify-center gap-2 
-                px-4 py-2 w-full lg:w-auto
-                bg-red-600 text-white rounded-lg 
-                hover:bg-red-700 transition-all
-              "
+                        flex items-center justify-center gap-2 
+                        px-4 py-2 w-full lg:w-auto
+                        bg-red-600 text-white rounded-lg 
+                        hover:bg-red-700 transition-all
+                      "
                     >
                       <XCircle size={16} /> Reject
                     </button>
@@ -258,13 +259,16 @@ export default function ManageApplications() {
       )}
 
       {/* --------------------------------------------------
-          DETAILS MODAL (FULLY FIXED + PROFESSIONAL UI)
+          DETAILS MODAL (ONLY OPENS FOR DETAILS)
       --------------------------------------------------- */}
-      {selectedApp && (
+      {showDetailsModal && selectedApp && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50">
           <div className="bg-white w-full max-w-3xl rounded-2xl p-6 shadow-lg relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedApp(null)}
+              onClick={() => {
+                setShowDetailsModal(false);
+                setSelectedApp(null);
+              }}
               className="absolute right-4 top-3 text-2xl text-gray-500 hover:text-black"
             >
               ×
@@ -286,14 +290,12 @@ export default function ManageApplications() {
               <p>
                 <strong>Email:</strong> {selectedApp.userEmail}
               </p>
-
               <p>
                 <strong>Country:</strong> {selectedApp.universityCountry}
               </p>
               <p>
                 <strong>Status:</strong> {selectedApp.applicationStatus}
               </p>
-
               <p>
                 <strong>Payment:</strong> {selectedApp.paymentStatus}
               </p>
@@ -325,9 +327,9 @@ export default function ManageApplications() {
       )}
 
       {/* --------------------------------------------------
-          FEEDBACK MODAL (MODERN UI)
+          FEEDBACK MODAL (ONLY OPENS FOR FEEDBACK)
       --------------------------------------------------- */}
-      {feedbackModal && (
+      {feedbackModal && selectedApp && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4 z-50">
           <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-xl relative">
             <button

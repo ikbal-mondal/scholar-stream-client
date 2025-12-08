@@ -115,7 +115,7 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen flex bg-gray-50 text-gray-800">
       {/* ---------- SIDEBAR (wide) ---------- */}
-      <aside className="hidden md:flex flex-col w-72 bg-purple-100 border-r-2 border-gray-300 shadow-2xl sticky top-0 h-screen">
+      <aside className="hidden md:flex flex-col w-72 bg-purple-100  shadow-md  sticky top-0 h-screen">
         <div className="px-6 py-5 bg-purple-100 flex items-center justify-between">
           <Link to="/">
             <div className="flex items-center gap-2">
@@ -227,7 +227,7 @@ const DashboardLayout = () => {
       {/* ---------- MAIN CONTENT ---------- */}
       <div className="flex-1 min-h-screen">
         {/* Topbar */}
-        <header className="flex items-center justify-between bg-white border-b px-6 py-3 sticky top-0 z-20">
+        <header className="flex items-center justify-between bg-gray-100 shadow-md   px-6 py-3 sticky top-0 z-20">
           <div className="flex items-center gap-3">
             {/* mobile menu button */}
             <button

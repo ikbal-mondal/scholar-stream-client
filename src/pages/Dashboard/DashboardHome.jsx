@@ -10,6 +10,9 @@ const DashboardHome = () => {
   const [users, setUsers] = useState([]);
   const [data, setData] = useState([]);
   const [apps, setApps] = useState([]);
+  const [application, setApplication] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [reviews, setReviews] = useState([]);
   useEffect(() => {
     loadUsers();
   }, []);
@@ -33,7 +36,7 @@ const DashboardHome = () => {
 
       const res = await api.get("/scholarships");
 
-      setData(res.data.results || []);
+      setData(res.data.total || []);
     } catch (err) {
       console.error("Load error:", err);
     } finally {
@@ -55,12 +58,61 @@ const DashboardHome = () => {
     }
   };
 
+  // load application by user emil
+
+  const loadApplicationByStudentEmail = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/applications/student/${backendUser.email}`);
+      setApplication(res.data || []);
+    } catch (err) {
+      //
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // load student payment
+
+  const loadPayments = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get(`/payments/student/${backendUser.email}`);
+      setPayments(data || []);
+    } catch (err) {
+      console.error("Error loading payments:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // student review load
+  const loadMyReviews = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await api.get("/my-reviews", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      setReviews(data || []);
+    } catch (err) {
+      //
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    loadApplicationByStudentEmail();
     loadScholarships();
     loadApps();
-  }, [data?.length]);
+    loadPayments();
+    loadMyReviews();
+  }, []);
+  // console.log(data);
 
-  const name = backendUser?.name?.split(" ")[0] || "User";
+  const name = backendUser?.name || "User";
   const role = backendUser?.role || "Student";
 
   // Role-based small cards (if admin, show global summary)
@@ -74,7 +126,7 @@ const DashboardHome = () => {
           },
           {
             title: "Scholarships",
-            value: data?.length,
+            value: data,
             icon: <FileText />,
           },
           {
@@ -87,12 +139,16 @@ const DashboardHome = () => {
       ? [
           { title: "Pending Applications", value: 18, icon: <FileText /> },
           { title: "Reviewed", value: 42, icon: <Star /> },
-          { title: "Total Applications", value: 120, icon: <Users /> },
+          { title: "Total Applications", value: apps?.length, icon: <Users /> },
         ]
       : [
-          { title: "My Applications", value: 3, icon: <FileText /> },
-          { title: "Payments", value: 1, icon: <PieChart /> },
-          { title: "My Reviews", value: 2, icon: <Star /> },
+          {
+            title: "My Applications",
+            value: application?.length,
+            icon: <FileText />,
+          },
+          { title: "Payments", value: payments?.length, icon: <PieChart /> },
+          { title: "My Reviews", value: reviews?.length, icon: <Star /> },
         ];
 
   return (
@@ -102,7 +158,10 @@ const DashboardHome = () => {
           Welcome back, <span className="text-primary">{name}</span> 👋
         </h1>
         <p className="text-sm text-gray-500 mt-1">
-          Role: <span className="font-medium">{role}</span>
+          <span className="font-medium text-primary badge ">
+            <span className="text-secondary">Role: </span>
+            {role}
+          </span>
         </p>
       </header>
 

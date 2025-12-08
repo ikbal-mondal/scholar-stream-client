@@ -82,6 +82,11 @@ export const AuthProvider = ({ children }) => {
 
     return user;
   };
+  // update user data
+  const setBackendUserSafe = (user) => {
+    setBackendUser(user);
+    localStorage.setItem("backendUser", JSON.stringify(user));
+  };
 
   /* ------------------------------------------------------------------
       🔥 GOOGLE LOGIN
@@ -176,6 +181,7 @@ export const AuthProvider = ({ children }) => {
     signInWithGoogle,
     logout,
     resetPassword,
+    setBackendUserSafe,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

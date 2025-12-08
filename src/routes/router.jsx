@@ -37,6 +37,7 @@ import AllApplications from "../pages/Dashboard/Admin/AllApplications";
 import NotFound from "../pages/Error/NotFound";
 import ContactUsPage from "../pages/ContactUsPage";
 import AboutUsPage from "../pages/AboutUsPage";
+import UserProfile from "../UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,10 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "contact-us", element: <ContactUsPage /> },
       { path: "about-us", element: <AboutUsPage /> },
-
+      {
+        path: "my-profile",
+        element: <UserProfile></UserProfile>,
+      },
       // Scholarship public pages
       { path: "scholarship/:id", element: <ScholarshipDetails /> },
       { path: "all-scholarships", element: <AllScholarships /> },
