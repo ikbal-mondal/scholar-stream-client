@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   PieChart,
   Pie,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -17,130 +17,80 @@ import {
 } from "recharts";
 
 export default function AnalyticsPage() {
-  const [summary, setSummary] = useState(null);
-  const [monthlyApps, setMonthlyApps] = useState([]);
-  const [monthlyRevenue, setMonthlyRevenue] = useState([]);
-  const [topScholarships, setTopScholarships] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const API = "https://scholar-stream-server-three.vercel.app";
+
+  const [summary, setSummary] = useState({});
+  const [revenue, setRevenue] = useState([]);
+  const [byUniversity, setByUniversity] = useState([]);
+  const [byCategory, setByCategory] = useState([]);
 
   const token =
-    typeof window !== "undefined" ? localStorage?.getItem("token") : "";
+    typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
   useEffect(() => {
-    loadAllData();
-
-    const interval = setInterval(() => {
-      loadAllData();
-    }, 5000);
-
-    return () => clearInterval(interval);
+    loadData();
   }, []);
 
-  async function loadAllData() {
-    setLoading(true);
+  async function loadData() {
     await Promise.all([
       fetchSummary(),
-      fetchMonthlyApplications(),
-      fetchMonthlyRevenue(),
-      fetchTopScholarships(),
+      fetchRevenue(),
+      fetchByUniversity(),
+      fetchByCategory(),
     ]);
-    setLoading(false);
   }
 
   async function fetchSummary() {
-    const res = await fetch(
-      `${"https://scholar-stream-server-three.vercel.app"}/analytics/summary`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const res = await fetch(`${API}/analytics/summary`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     setSummary(await res.json());
   }
 
-  async function fetchMonthlyApplications() {
-    const res = await fetch(
-      `${"https://scholar-stream-server-three.vercel.app"}/analytics/applications-monthly`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    setMonthlyApps(await res.json());
+  async function fetchRevenue() {
+    const res = await fetch(`${API}/analytics/revenue-monthly`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setRevenue(Array.isArray(data) ? data : []);
   }
 
-  async function fetchMonthlyRevenue() {
-    const res = await fetch(
-      `${"https://scholar-stream-server-three.vercel.app"}/analytics/revenue-monthly`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    setMonthlyRevenue(await res.json());
+  async function fetchByUniversity() {
+    const res = await fetch(`${API}/analytics/applications-by-university`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setByUniversity(Array.isArray(data) ? data : []);
   }
 
-  async function fetchTopScholarships() {
-    const res = await fetch(
-      `${"https://scholar-stream-server-three.vercel.app"}/analytics/top-scholarships`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    setTopScholarships(await res.json());
+  async function fetchByCategory() {
+    const res = await fetch(`${API}/analytics/applications-by-category`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setByCategory(Array.isArray(data) ? data : []);
   }
 
   const colors = ["#FF6CAB", "#7366FF", "#36C2CE", "#FFA41B", "#4CAF50"];
 
   return (
     <div className="p-6 space-y-6">
-      <h2 className="text-3xl font-bold text-gray-800">
-        📊 Platform Analytics
-      </h2>
+      <h1 className="text-3xl font-bold">Platform Analytics</h1>
 
       {/* SUMMARY CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-        <SummaryCard
-          title="Users"
-          value={summary?.usersCount}
-          gradient="from-purple-500 to-purple-700"
-        />
-        <SummaryCard
-          title="Scholarships"
-          value={summary?.scholarshipsCount}
-          gradient="from-pink-500 to-pink-700"
-        />
-        <SummaryCard
-          title="Applications"
-          value={summary?.applicationsCount}
-          gradient="from-blue-500 to-blue-700"
-        />
-        <SummaryCard
-          title="Paid Applications"
-          value={summary?.paidApplications}
-          gradient="from-green-500 to-green-700"
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card label="Total Users" value={summary.usersCount} />
+        <Card label="Total Scholarships" value={summary.scholarshipsCount} />
+        <Card
+          label="Total Paid Applications"
+          value={summary.paidApplications}
         />
       </div>
 
-      {/* LINE CHART – MONTHLY APPLICATIONS */}
-      <ChartSection title="Monthly Applications Trend">
+      {/* REVENUE CHART */}
+      <Section title="Monthly Revenue">
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={monthlyApps}>
-            <XAxis dataKey="_id.month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="count"
-              stroke="#FF6CAB"
-              strokeWidth={3}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartSection>
-
-      {/* BAR CHART – MONTHLY REVENUE */}
-      <ChartSection title="Monthly Revenue">
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={monthlyRevenue}>
+          <BarChart data={revenue}>
             <XAxis dataKey="_id.month" />
             <YAxis />
             <Tooltip />
@@ -148,47 +98,57 @@ export default function AnalyticsPage() {
             <Bar dataKey="totalRevenue" fill="#36C2CE" />
           </BarChart>
         </ResponsiveContainer>
-      </ChartSection>
+      </Section>
 
-      {/* PIE CHART – TOP SCHOLARSHIPS */}
-      <ChartSection title="Top Applied Scholarships">
-        <ResponsiveContainer width="100%" height={300}>
+      {/* APPLICATIONS BY UNIVERSITY */}
+      <Section title="Applications by University">
+        <ResponsiveContainer width="100%" height={320}>
+          <BarChart data={byUniversity}>
+            <XAxis dataKey="_id" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#FF6CAB" />
+          </BarChart>
+        </ResponsiveContainer>
+      </Section>
+
+      {/* APPLICATIONS BY CATEGORY */}
+      <Section title="Applications by Scholarship Category">
+        <ResponsiveContainer width="100%" height={320}>
           <PieChart>
             <Pie
-              data={topScholarships}
-              dataKey="totalApplications"
-              cx="50%"
-              cy="50%"
+              data={byCategory}
+              dataKey="count"
+              nameKey="_id"
               outerRadius={120}
               label
             >
-              {topScholarships?.map((entry, index) => (
-                <Cell key={index} fill={colors[index % colors.length]} />
+              {byCategory.map((d, i) => (
+                <Cell key={i} fill={colors[i % colors.length]} />
               ))}
             </Pie>
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-      </ChartSection>
+      </Section>
     </div>
   );
 }
 
-function SummaryCard({ title, value, gradient }) {
+function Card({ label, value }) {
   return (
-    <div
-      className={`p-6 rounded-2xl text-white shadow-lg bg-gradient-to-br ${gradient}`}
-    >
-      <p className="text-sm opacity-90">{title}</p>
-      <h3 className="text-4xl font-bold mt-1">{value ?? 0}</h3>
+    <div className="p-6 bg-white shadow rounded-xl border">
+      <p className="text-gray-500">{label}</p>
+      <h2 className="text-4xl font-bold mt-2">{value ?? 0}</h2>
     </div>
   );
 }
 
-function ChartSection({ title, children }) {
+function Section({ title, children }) {
   return (
-    <div className="p-6 bg-white rounded-2xl shadow border">
-      <h3 className="text-xl font-semibold mb-3 text-gray-700">{title}</h3>
+    <div className="bg-white p-6 rounded-xl shadow border">
+      <h2 className="text-xl font-semibold mb-4">{title}</h2>
       {children}
     </div>
   );
