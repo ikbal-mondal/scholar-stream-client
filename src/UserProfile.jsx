@@ -118,7 +118,7 @@ export default function UserProfile() {
                 roleColor[backendUser.role]
               }`}
             >
-              {backendUser.role}
+              {backendUser?.role}
             </span>
           </div>
         </div>
@@ -153,75 +153,144 @@ export default function UserProfile() {
 
       {/* UPDATE MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl relative">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-8 shadow-xl relative">
+            {/* Close Button */}
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-3 right-4 text-2xl text-gray-500 hover:text-black"
+              className="absolute top-4 right-5 text-xl text-gray-500 hover:text-black"
             >
               ×
             </button>
 
-            <h2 className="text-3xl font-bold mb-6 text-purple-600">
-              Edit Profile
+            {/* Title */}
+            <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900">
+              Update Profile
             </h2>
 
-            <div className="space-y-4">
-              {/* CLOUDINARY PREVIEW */}
-              <div className="flex items-center gap-4">
+            {/* Avatar Section */}
+            <div className="flex items-center justify-center mb-6">
+              <div className="relative w-28 h-28">
+                {/* Avatar */}
                 <img
                   src={form.photoURL}
-                  className="w-20 h-20 rounded-full border object-cover"
+                  className="w-28 h-28 rounded-full object-cover shadow-md"
                 />
 
-                <div>
-                  <p className="text-sm font-semibold">Upload New Photo</p>
-                  <input type="file" onChange={uploadToCloudinary} />
-                  {uploading && (
-                    <p className="text-xs text-purple-600">Uploading...</p>
-                  )}
-                </div>
-              </div>
+                {/* Floating Plus Button */}
+                <label
+                  htmlFor="avatarInput"
+                  className="absolute bottom-1 right-1 bg-teal-500 text-white w-8 h-8 flex items-center 
+            justify-center rounded-full text-lg cursor-pointer shadow-md hover:bg-teal-600 transition"
+                >
+                  +
+                </label>
 
-              {/* INPUTS */}
-              <input
-                className="w-full border p-3 rounded-xl"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Name"
-              />
-              <input
-                className="w-full border p-3 rounded-xl"
-                value={form.country}
-                onChange={(e) => setForm({ ...form, country: e.target.value })}
-                placeholder="Country"
-              />
-              <input
-                className="w-full border p-3 rounded-xl"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="Phone"
-              />
-              <input
-                className="w-full border p-3 rounded-xl"
-                type="date"
-                value={form.dob}
-                onChange={(e) => setForm({ ...form, dob: e.target.value })}
-              />
-              <input
-                className="w-full border p-3 rounded-xl"
-                value={form.college}
-                onChange={(e) => setForm({ ...form, college: e.target.value })}
-                placeholder="College"
-              />
+                <input
+                  type="file"
+                  id="avatarInput"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={uploadToCloudinary}
+                />
+              </div>
             </div>
 
-            <button
-              onClick={handleUpdate}
-              className="mt-6 w-full bg-purple-600 text-white py-3 rounded-xl hover:bg-purple-700 shadow-lg"
-            >
-              Save Changes
-            </button>
+            {/* Uploading text */}
+            {uploading && (
+              <p className="text-sm text-purple-600 text-center -mt-4 mb-4">
+                Uploading...
+              </p>
+            )}
+
+            {/* FORM FIELDS — NOW 2 COLUMN RESPONSIVE */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              {/* Full Name */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-gray-600">
+                  Full name
+                </label>
+                <input
+                  className="border p-3 rounded-lg mt-1 focus:ring focus:ring-purple-200 outline-none"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Enter full name"
+                />
+              </div>
+
+              {/* Country */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-gray-600">
+                  Country
+                </label>
+                <input
+                  className="border p-3 rounded-lg mt-1 focus:ring focus:ring-purple-200 outline-none"
+                  value={form.country}
+                  onChange={(e) =>
+                    setForm({ ...form, country: e.target.value })
+                  }
+                  placeholder="Enter country"
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-gray-600">
+                  Phone
+                </label>
+                <input
+                  className="border p-3 rounded-lg mt-1 focus:ring focus:ring-purple-200 outline-none"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="Phone number"
+                />
+              </div>
+
+              {/* Date of Birth */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-gray-600">
+                  Date of birth
+                </label>
+                <input
+                  type="date"
+                  className="border p-3 rounded-lg mt-1 focus:ring focus:ring-purple-200 outline-none"
+                  value={form.dob}
+                  onChange={(e) => setForm({ ...form, dob: e.target.value })}
+                />
+              </div>
+
+              {/* Address / College — FULL WIDTH FIELD */}
+              <div className="flex flex-col md:col-span-2">
+                <label className="text-sm font-medium text-gray-600">
+                  Address / College
+                </label>
+                <input
+                  className="border p-3 rounded-lg mt-1 focus:ring focus:ring-purple-200 outline-none"
+                  value={form.college}
+                  onChange={(e) =>
+                    setForm({ ...form, college: e.target.value })
+                  }
+                  placeholder="Address or College Name"
+                />
+              </div>
+            </div>
+
+            {/* BUTTONS */}
+            <div className="flex justify-between gap-4 mt-8">
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-1/2 py-3 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleUpdate}
+                className="w-1/2 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       )}

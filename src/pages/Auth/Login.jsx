@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router";
 import Swal from "sweetalert2";
 import AuthContext from "../../context/AuthProvider";
+import { Plane } from "lucide-react";
 
 const Login = () => {
   const { login, signInWithGoogle, resetPassword } = useContext(AuthContext);
@@ -48,56 +49,101 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-primary">
-        Login to Scholar Stream
-      </h2>
+    <div className="min-h-screen flex items-center justify-center  p-4">
+      {/* MAIN CARD */}
+      <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-8 pt-12 ">
+        {/* PAGE TITLE */}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          className="input w-full"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          className="input w-full"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <div className="flex items-center justify-between">
-          <button className="btn bg-primary text-white">Login</button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            className="text-primary underline"
+        <div className="mb-2 text-center">
+          <h2 className="text-center text-3xl font-extrabold text-primary">
+            LogIn Now
+          </h2>
+          <p className="text-center text-sm text-black mb-8 "></p>
+          Welcome to
+          <Link
+            to="/"
+            className="text-2xl justify-center font-extrabold flex items-center gap-1"
           >
-            Forgot?
-          </button>
+            <span className="text-primary">Scholar</span>
+            <span className="text-secondary">Stream</span>
+          </Link>
         </div>
-      </form>
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+          {/* Email */}
+          <div>
+            <label className="text-sm font-semibold text-gray-600">Email</label>
+            <input
+              className="w-full border-b border-gray-300 focus:border-purple-600 focus:outline-none p-2"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-      <div className="divider">OR</div>
+          {/* Password */}
+          <div>
+            <label className="text-sm font-semibold text-gray-600">
+              Password
+            </label>
+            <input
+              type="password"
+              className="w-full border-b border-gray-300 focus:border-purple-600 focus:outline-none p-2"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      <button
-        onClick={handleGoogle}
-        className="w-full px-4 py-2 border rounded flex items-center justify-center gap-2"
-      >
-        <img src="/google-icon.svg" alt="google" className="w-5" />
-        Continue with Google
-      </button>
+          {/* Remember + Forgot */}
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-sm checkbox-primary"
+              />
+              Remember
+            </label>
 
-      <p className="mt-4 text-sm">
-        Don't have an account?{" "}
-        <Link to="/register" className="text-primary underline">
-          Register
-        </Link>
-      </p>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="text-purple-600 hover:underline"
+            >
+              Forgot Password?
+            </button>
+          </div>
+
+          {/* LOGIN BUTTON */}
+          <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:opacity-90 transition">
+            LOGIN
+          </button>
+        </form>
+        {/* OR DIVIDER */}
+        <div className="my-6 text-center text-gray-400 text-sm">OR</div>
+        {/* GOOGLE BUTTON */}
+        <button
+          onClick={handleGoogle}
+          className="w-full py-3 border border-gray-300 rounded-full flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+        >
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVZEZ6fa7bPwCI4HE5583rhd3qiFNmf6kiPg&s"
+            alt="google"
+            className="w-5"
+          />
+          Continue with Google
+        </button>
+        {/* REGISTER LINK */}
+        <p className="text-center text-sm mt-6">
+          Don’t have an account?
+          <Link
+            to="/register"
+            className="text-purple-600 font-semibold hover:underline ml-1"
+          >
+            Create Account
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

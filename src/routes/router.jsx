@@ -54,7 +54,11 @@ const router = createBrowserRouter([
       { path: "about-us", element: <AboutUsPage /> },
       {
         path: "my-profile",
-        element: <UserProfile></UserProfile>,
+        element: (
+          <ProtectedRoute allowedRoles={["Student", "Moderator", "Admin"]}>
+            <UserProfile></UserProfile>
+          </ProtectedRoute>
+        ),
       },
       // Scholarship public pages
       { path: "scholarship/:id", element: <ScholarshipDetails /> },

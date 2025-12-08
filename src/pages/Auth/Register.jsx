@@ -3,7 +3,7 @@
 import React, { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import api from "../../services/api";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import AuthContext from "../../context/AuthProvider";
 
 const Register = () => {
@@ -136,7 +136,7 @@ const Register = () => {
   return (
     <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-10 mt-10">
       <h2 className="text-3xl font-bold text-primary mb-6">
-        Create Your Account
+        Create Your <span className="text-secondary">Account</span>
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -205,9 +205,9 @@ const Register = () => {
         />
 
         {/* CLOUDINARY UPLOAD UI */}
-        <div className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer">
+        <div className="border-2 border-primary border-dashed rounded-lg p-6 text-center cursor-pointer">
           <label className="cursor-pointer">
-            <span className="block text-gray-600 mb-2">
+            <span className="block text-gray-400 mb-2">
               {" "}
               Choses Your Photo then stay some seconds we will upload it for you
               automatically *
@@ -248,11 +248,17 @@ const Register = () => {
 
         <button
           type="submit"
-          className="btn bg-primary text-white w-full text-lg"
+          className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:opacity-90 transition"
           disabled={uploading}
         >
           {uploading ? "Uploading..." : "Create Account"}
         </button>
+        <span className="text-secondary">
+          Already hove a Account{" "}
+          <Link to="/login" className="text-primary underline">
+            Login Now
+          </Link>
+        </span>
       </form>
     </div>
   );

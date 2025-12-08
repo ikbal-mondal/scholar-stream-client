@@ -13,7 +13,7 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
     backendUser.role.charAt(0).toUpperCase() +
     backendUser.role.slice(1).toLowerCase();
 
-  if (!allowedRoles.includes(role)) {
+  if (!allowedRoles?.includes(role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
