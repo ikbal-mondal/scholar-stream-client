@@ -8,7 +8,7 @@ export default function CTABanner() {
           {/* LEFT IMAGE */}
           <div className="w-full lg:w-1/2 h-64 lg:h-auto">
             <img
-              src="https://www.sfwpexperts.com/wp-content/uploads/2021/03/sfwpexperts.com-10-Proven-Tips-To-Create-Eye-Catchy-Call-To-Action-CTAs-For-Your-Website-Design3.png"
+              src="https://ik.imagekit.io/7wgh8xbqy/free-loan-advice_gbpV7w_9-.webp"
               alt="Scholarship CTA"
               className="w-full h-full object-cover"
             />

@@ -14,49 +14,49 @@ import {
 const faqData = [
   {
     id: 1,
-    icon: <Globe2 className="w-7 h-7 text-purple-600" />,
+    icon: <Globe2 className="w-7 h-7 text-white" />,
     question: "What is Scholar Stream?",
     answer:
       "Scholar Stream is a modern platform that helps students discover and apply for global scholarships easily. It simplifies searching, tracking, and understanding eligibility. With organized details and personalized recommendations, it saves time and ensures students find relevant funding opportunities with clarity and confidence.",
   },
   {
     id: 2,
-    icon: <BadgeCheck className="w-7 h-7 text-purple-600" />,
+    icon: <BadgeCheck className="w-7 h-7 text-white" />,
     question: "Are scholarships always fully funded?",
     answer:
       "Not all scholarships are fully funded. Some cover tuition and living costs, while others offer partial benefits. Scholar Stream clearly labels each program, helping students compare funding levels and choose options matching their financial needs and academic plans.",
   },
   {
     id: 3,
-    icon: <BookOpen className="w-7 h-7 text-purple-600" />,
+    icon: <BookOpen className="w-7 h-7 text-white" />,
     question: "Do I need IELTS for every scholarship?",
     answer:
       "No. Many scholarships accept students without IELTS if they meet alternative English proficiency requirements. Scholar Stream’s filters help students quickly find opportunities that do not require standardized English tests.",
   },
   {
     id: 4,
-    icon: <Search className="w-7 h-7 text-purple-600" />,
+    icon: <Search className="w-7 h-7 text-white" />,
     question: "How can I find scholarships based on my profile?",
     answer:
       "Use filters like degree level, nationality, funding type, deadlines, and study field. Scholar Stream’s smart system suggests scholarships aligned with your background and ambitions.",
   },
   {
     id: 5,
-    icon: <School className="w-7 h-7 text-purple-600" />,
+    icon: <School className="w-7 h-7 text-white" />,
     question: "Can international students apply?",
     answer:
       "Yes. Scholar Stream lists scholarships globally, allowing international students to filter opportunities available for their nationality and academic background.",
   },
   {
     id: 6,
-    icon: <ShieldCheck className="w-7 h-7 text-purple-600" />,
+    icon: <ShieldCheck className="w-7 h-7 text-white" />,
     question: "How reliable is the information?",
     answer:
       "All scholarship details are updated regularly and verified through official portals, ensuring accurate results regarding eligibility, deadlines, benefits, and application procedures.",
   },
   {
     id: 7,
-    icon: <HelpCircle className="w-7 h-7 text-purple-600" />,
+    icon: <HelpCircle className="w-7 h-7 text-white" />,
     question: "How does the dashboard help me?",
     answer:
       "The dashboard allows students to save scholarships, track deadlines, manage applications, and receive reminders. It centralizes your scholarship journey in one organized space.",

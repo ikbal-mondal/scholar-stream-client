@@ -2,39 +2,63 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthProvider";
 import { Users, FileText, PieChart, Star } from "lucide-react";
-
-/**
- * DashboardHome
- * - fetches small analytics summary (uses /analytics/summary if available)
- * - shows role-based stats and recent activities
- * - responsive and fits wide sidebar layout
- */
+import api from "../../services/api";
 
 const DashboardHome = () => {
   const { backendUser } = useContext(AuthContext) || {};
-  const [summary, setSummary] = useState({
-    usersCount: "---",
-    scholarshipsCount: "---",
-    applicationsCount: "---",
-    paidApplications: "---",
-  });
-
-  // try load server analytics (if API present)
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
+  const [apps, setApps] = useState([]);
   useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      try {
-        const res = await fetch("/analytics/summary"); // ensure proxy or absolute URL in production
-        if (!res.ok) throw new Error("no analytics");
-        const data = await res.json();
-        if (mounted) setSummary(data);
-      } catch (err) {
-        // ignore - keep placeholders
-      }
-    };
-    load();
-    return () => (mounted = false);
+    loadUsers();
   }, []);
+
+  // ---------------------------------------
+  // LOAD USERS
+  // ---------------------------------------
+  const loadUsers = async () => {
+    try {
+      const { data } = await api.get("/users");
+      setUsers(data || []);
+    } catch (error) {
+      //  ''
+    }
+  };
+
+  // ------------------ LOAD SCHOLARSHIPS ------------------
+  const loadScholarships = async () => {
+    try {
+      setLoading(true);
+
+      const res = await api.get("/scholarships");
+
+      setData(res.data.results || []);
+    } catch (err) {
+      console.error("Load error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadApps = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/applications", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setApps(res.data || []);
+    } catch (err) {
+      console.error("Error loading applications:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadScholarships();
+    loadApps();
+  }, [data?.length]);
 
   const name = backendUser?.name?.split(" ")[0] || "User";
   const role = backendUser?.role || "Student";
@@ -43,15 +67,19 @@ const DashboardHome = () => {
   const cards =
     role === "Admin"
       ? [
-          { title: "Total Users", value: summary.usersCount, icon: <Users /> },
+          {
+            title: "Total Users",
+            value: users?.length,
+            icon: <Users />,
+          },
           {
             title: "Scholarships",
-            value: summary.scholarshipsCount,
+            value: data?.length,
             icon: <FileText />,
           },
           {
-            title: "Paid Applications",
-            value: summary.paidApplications,
+            title: " Total Applications",
+            value: apps?.length,
             icon: <PieChart />,
           },
         ]
