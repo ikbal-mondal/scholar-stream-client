@@ -1,12 +1,12 @@
 "use client";
 
-import { Link } from "react-router-dom"; // ❗ If using Next.js change to next/link
+import { Link } from "react-router-dom";
 import { ArrowLeft, AlertTriangle } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <div className="text-center max-w-md bg-white shadow-xl rounded-2xl p-10 border">
+    <div className=" flex items-center justify-center bg-gray-50 p-6">
+      <div className="text-center max-w-md bg-white shadow-xl rounded-2xl p-10">
         <div className="flex justify-center mb-6">
           <div className="bg-red-100 p-4 rounded-full">
             <AlertTriangle className="text-red-500 w-10 h-10" />

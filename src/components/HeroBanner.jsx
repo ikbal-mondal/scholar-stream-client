@@ -1,12 +1,9 @@
 import { FaGraduationCap, FaChalkboardTeacher, FaClock } from "react-icons/fa";
 import CustomDropdown from "../components/CustomDropdown";
-import AuthContext from "../context/AuthProvider";
-import { useContext } from "react";
+
 import { Link } from "react-router";
 
 const HeroBanner = () => {
-  const { backendUser, logout } = useContext(AuthContext) || {};
-  const role = backendUser?.role || null;
   return (
     <div className="relative w-full bg-[#faf8ff] pb-32 md:pb-40">
       {/* HERO SECTION */}
@@ -28,27 +25,6 @@ const HeroBanner = () => {
           >
             Explore Scholarships
           </Link>
-          {backendUser && (
-            <div className="hidden lg:block">
-              <div
-                className="flex  mt-6 items-center gap-3 bg-gradient-to-r from-purple-50 to-purple-100 
-                  border border-purple-200 rounded-xl px-4 py-2 shadow-sm"
-              >
-                <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white text-lg font-bold">
-                  {backendUser?.name?.charAt(0)}
-                </div>
-
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    Welcome back, {backendUser?.name}
-                  </p>
-                  <p className="text-xs text-purple-700 font-medium">
-                    Role: {backendUser?.role || "User"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* RIGHT IMAGE */}
@@ -65,35 +41,37 @@ const HeroBanner = () => {
       <div className="absolute left-1/2 top-full transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl px-4">
         <div className="bg-white shadow-xl rounded-2xl p-6 md:p-8 border border-gray-100">
           {/* SEARCH + FILTERS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {/* SEARCH BOX */}
-            <div className="relative group">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
-                🔍
-              </span>
+          <div className="hidden lg:block">
+            <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {/* SEARCH BOX */}
+              <div className="relative group">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+                  🔍
+                </span>
 
-              <input
-                type="text"
-                placeholder="Search Scholarships..."
-                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm hover:shadow-md transition-all duration-200"
+                <input
+                  type="text"
+                  placeholder="Search Scholarships..."
+                  className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm hover:shadow-md transition-all duration-200"
+                />
+              </div>
+
+              {/* CUSTOM FILTER DROPDOWNS */}
+              <CustomDropdown
+                label="Country"
+                options={["USA", "UK", "Canada", "Germany", "Australia"]}
+              />
+
+              <CustomDropdown
+                label="Degree"
+                options={["Diploma", "Bachelor", "Masters", "PhD"]}
+              />
+
+              <CustomDropdown
+                label="Fund Category"
+                options={["Full Fund", "Partial Fund", "Self Fund"]}
               />
             </div>
-
-            {/* CUSTOM FILTER DROPDOWNS */}
-            <CustomDropdown
-              label="Country"
-              options={["USA", "UK", "Canada", "Germany", "Australia"]}
-            />
-
-            <CustomDropdown
-              label="Degree"
-              options={["Diploma", "Bachelor", "Masters", "PhD"]}
-            />
-
-            <CustomDropdown
-              label="Fund Category"
-              options={["Full Fund", "Partial Fund", "Self Fund"]}
-            />
           </div>
 
           {/* INFO CARDS */}

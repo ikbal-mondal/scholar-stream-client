@@ -16,6 +16,7 @@ import {
   BarChart2,
   PlusSquare,
   CircleDollarSign,
+  MessageCircleMore,
 } from "lucide-react";
 import AuthContext from "../context/AuthProvider";
 
@@ -65,6 +66,11 @@ const roleMenu = {
       path: "/dashboard/moderator/feedback",
       icon: <Bookmark />,
     },
+    {
+      name: "See All Inquiries",
+      path: "/dashboard/inquiries",
+      icon: <MessageCircleMore></MessageCircleMore>,
+    },
   ],
   Admin: [
     {
@@ -90,6 +96,11 @@ const roleMenu = {
       icon: <FileText />,
     },
     { name: "Analytics", path: "/dashboard/analytics", icon: <BarChart2 /> },
+    {
+      name: "See All Inquiries",
+      path: "/dashboard/inquiries",
+      icon: <MessageCircleMore></MessageCircleMore>,
+    },
   ],
 };
 
@@ -140,10 +151,10 @@ const DashboardLayout = () => {
                 to={item.path}
                 end={item.end || false}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-3 rounded-lg transition relative ${
+                  `flex items-center gap-3 px-3 py-3 my-2 rounded-lg transition relative ${
                     isActive
                       ? "bg-white text-primary font-semibold shadow-sm"
-                      : "text-gray-700 hover:bg-gray-50"
+                      : "text-gray-800 border-primary hover:bg-gray-50 bg-secondary/2"
                   }`
                 }
               >

@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function AboutUsPage() {
   return (
     <section className="bg-gray-50">
@@ -161,9 +163,11 @@ export default function AboutUsPage() {
           Start exploring global scholarships today — your future begins with
           one application.
         </p>
-        <button className="px-8 py-4 bg-white text-purple-700 font-semibold rounded-xl hover:bg-gray-100 transition">
-          Get Started
-        </button>
+        <Link to="/all-scholarships">
+          <button className="px-8 py-4 bg-white text-purple-700 font-semibold rounded-xl hover:bg-gray-100 transition">
+            Get Started apply
+          </button>
+        </Link>
       </div>
     </section>
   );

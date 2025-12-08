@@ -9,6 +9,7 @@ import CTABanner from "../../components/CTABanner";
 import DeadlineCountdown from "../../components/DeadlineCountdown";
 import VideoReviews from "../../components/VideoReviews";
 import GlobalSuccessMap from "../../components/GlobalSuccessMap";
+import ContactUsPage from "../ContactUsPage";
 
 const HomePage = () => {
   return (
@@ -23,6 +24,7 @@ const HomePage = () => {
       <CTABanner></CTABanner>
       <VideoReviews></VideoReviews>
       <GlobalSuccessMap></GlobalSuccessMap>
+      <ContactUsPage></ContactUsPage>
     </div>
   );
 };

@@ -38,6 +38,7 @@ import NotFound from "../pages/Error/NotFound";
 import ContactUsPage from "../pages/ContactUsPage";
 import AboutUsPage from "../pages/AboutUsPage";
 import UserProfile from "../UserProfile";
+import AllInquiries from "../pages/Dashboard/Admin/AllInquiries";
 
 const router = createBrowserRouter([
   {
@@ -129,6 +130,14 @@ const router = createBrowserRouter([
           <AdminRoute>
             <Analytics />
           </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/inquiries",
+        element: (
+          <ProtectedRoute allowedRoles={["Moderator", "Admin"]}>
+            <AllInquiries></AllInquiries>
+          </ProtectedRoute>
         ),
       },
       {

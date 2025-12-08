@@ -1,7 +1,13 @@
 // src/pages/Dashboard/DashboardHome.jsx
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthProvider";
-import { Users, FileText, PieChart, Star } from "lucide-react";
+import {
+  Users,
+  FileText,
+  PieChart,
+  Star,
+  MessageCircleMoreIcon,
+} from "lucide-react";
 import api from "../../services/api";
 
 const DashboardHome = () => {
@@ -13,6 +19,7 @@ const DashboardHome = () => {
   const [application, setApplication] = useState([]);
   const [payments, setPayments] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
   useEffect(() => {
     loadUsers();
   }, []);
@@ -103,9 +110,17 @@ const DashboardHome = () => {
     }
   };
 
+  // get all inquiries
+
+  const loadInquiries = async () => {
+    const res = await api.get("/contact");
+    setInquiries(res.data || []);
+  };
+
   useEffect(() => {
     loadApplicationByStudentEmail();
     loadScholarships();
+    loadInquiries();
     loadApps();
     loadPayments();
     loadMyReviews();
@@ -134,11 +149,19 @@ const DashboardHome = () => {
             value: apps?.length,
             icon: <PieChart />,
           },
+          {
+            title: " Total Inquiries",
+            value: inquiries?.length,
+            icon: <MessageCircleMoreIcon></MessageCircleMoreIcon>,
+          },
         ]
       : role === "Moderator"
       ? [
-          { title: "Pending Applications", value: 18, icon: <FileText /> },
-          { title: "Reviewed", value: 42, icon: <Star /> },
+          {
+            title: " Total Inquiries",
+            value: inquiries?.length,
+            icon: <MessageCircleMoreIcon></MessageCircleMoreIcon>,
+          },
           { title: "Total Applications", value: apps?.length, icon: <Users /> },
         ]
       : [

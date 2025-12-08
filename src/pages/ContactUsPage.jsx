@@ -1,4 +1,28 @@
+import { useState } from "react";
+import Swal from "sweetalert2";
+import api from "../services/api";
+
 export default function ContactUsPage() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const message = e.target.message.value;
+
+    try {
+      const res = await api.post("/contact", { name, email, message });
+
+      if (res.data.success) {
+        Swal.fire("Success!", "Your message has been sent.", "success");
+        e.target.reset();
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to send message", "error");
+    }
+  };
+
   return (
     <section className="bg-gray-50 min-h-screen">
       {/* HERO SECTION */}
@@ -6,16 +30,15 @@ export default function ContactUsPage() {
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-5xl font-bold">Contact Us</h1>
           <p className="mt-4 text-lg opacity-90 max-w-2xl mx-auto">
-            Have questions about scholarships, applications, or partnership
-            opportunities? We’re here to help you every step of the way.
+            Have questions? We’re here to help you every step of the way.
           </p>
         </div>
       </div>
 
-      {/* CONTACT INFO GRID */}
+      {/* CONTACT INFO */}
       <div className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10">
         {/* CARD 1 */}
-        <div className="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-gray-100">
+        <div className="p-8 bg-white rounded-2xl shadow-lg border hover:shadow-xl transition">
           <div className="text-purple-600 text-4xl mb-4">📞</div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Phone</h3>
           <p className="text-gray-600">+1 (555) 123-4567</p>
@@ -23,7 +46,7 @@ export default function ContactUsPage() {
         </div>
 
         {/* CARD 2 */}
-        <div className="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-gray-100">
+        <div className="p-8 bg-white rounded-2xl shadow-lg border hover:shadow-xl transition">
           <div className="text-indigo-600 text-4xl mb-4">📧</div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Email</h3>
           <p className="text-gray-600">support@scholarstream.com</p>
@@ -31,29 +54,32 @@ export default function ContactUsPage() {
         </div>
 
         {/* CARD 3 */}
-        <div className="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-gray-100">
+        <div className="p-8 bg-white rounded-2xl shadow-lg border hover:shadow-xl transition">
           <div className="text-pink-500 text-4xl mb-4">📍</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Office Location
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Office</h3>
           <p className="text-gray-600">Scholar Stream HQ</p>
-          <p className="text-gray-600">San Francisco, CA, USA</p>
+          <p className="text-gray-600">San Francisco, CA</p>
         </div>
       </div>
 
-      {/* CONTACT FORM SECTION */}
+      {/* CONTACT FORM */}
       <div className="max-w-4xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">
           Send Us a Message
         </h2>
 
-        <form className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 space-y-6">
-          {/* NAME */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-8 rounded-2xl shadow-xl border space-y-6"
+        >
+          {/* FULL NAME */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               Full Name
             </label>
             <input
+              required
+              name="name"
               type="text"
               className="w-full px-4 py-3 rounded-xl bg-gray-100 border border-gray-300 
                          focus:ring-2 focus:ring-purple-500 outline-none"
@@ -67,6 +93,8 @@ export default function ContactUsPage() {
               Email Address
             </label>
             <input
+              required
+              name="email"
               type="email"
               className="w-full px-4 py-3 rounded-xl bg-gray-100 border border-gray-300 
                          focus:ring-2 focus:ring-purple-500 outline-none"
@@ -80,6 +108,8 @@ export default function ContactUsPage() {
               Message
             </label>
             <textarea
+              required
+              name="message"
               rows={5}
               className="w-full px-4 py-3 rounded-xl bg-gray-100 border border-gray-300 
                          focus:ring-2 focus:ring-purple-500 outline-none"
@@ -87,34 +117,15 @@ export default function ContactUsPage() {
             ></textarea>
           </div>
 
-          {/* SUBMIT */}
+          {/* SUBMIT BUTTON */}
           <button
             type="submit"
-            className="w-full py-4 bg-purple-600 text-white font-semibold rounded-xl 
-                       hover:bg-purple-700 transition text-lg"
+            className="w-full py-4 bg-purple-600 text-white text-lg font-semibold 
+                       rounded-xl hover:bg-purple-700 transition shadow-md"
           >
             Send Message
           </button>
         </form>
-      </div>
-
-      {/* GOOGLE MAP */}
-      <div className="max-w-6xl mx-auto px-6 pb-20">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-          Find Us on the Map
-        </h2>
-
-        <div className="rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8437999797075!2d144.95592331531658!3d-37.81720997975178!2m3!1f0!2f0!3f0!3m2
-                 !1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577e8f5e2ad653!2sScholar%20Stream%20Office!
-                 5e0!3m2!1sen!2sus!4v1693000000000"
-            width="100%"
-            height="450"
-            loading="lazy"
-            className="rounded-2xl"
-          ></iframe>
-        </div>
       </div>
     </section>
   );
