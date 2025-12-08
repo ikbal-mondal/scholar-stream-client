@@ -34,6 +34,7 @@ import MyReviews from "../pages/Dashboard/Student/MyReviews";
 import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
 import ApplicationFeedback from "../pages/Dashboard/Moderator/ApplicationFeedback";
 import AllApplications from "../pages/Dashboard/Admin/AllApplications";
+import NotFound from "../pages/Error/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "*", element: <NotFound /> },
 
       // AUTH
       { path: "login", element: <Login /> },

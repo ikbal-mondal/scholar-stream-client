@@ -117,15 +117,19 @@ const DashboardLayout = () => {
       {/* ---------- SIDEBAR (wide) ---------- */}
       <aside className="hidden md:flex flex-col w-72 bg-purple-100 border-r-2 border-gray-300 shadow-2xl sticky top-0 h-screen">
         <div className="px-6 py-5 bg-purple-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center text-primary font-extrabold">
-              SS
+          <Link to="/">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center text-primary font-extrabold">
+                SS
+              </div>
+              <div>
+                <div className="text-xl font-bold text-primary">Scholar</div>
+                <div className="text-md font-semibold text-secondary">
+                  Stream
+                </div>
+              </div>
             </div>
-            <div>
-              <div className="text-xl font-bold text-primary">Scholar</div>
-              <div className="text-md font-semibold text-secondary">Stream</div>
-            </div>
-          </div>
+          </Link>
         </div>
 
         <nav className="px-4 py-6 flex-1 overflow-auto">

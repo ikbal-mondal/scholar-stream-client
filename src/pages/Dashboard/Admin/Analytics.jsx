@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import api from "../../../services/api";
 
 export default function AnalyticsPage() {
   const API = "https://scholar-stream-server-three.vercel.app";
@@ -23,6 +24,7 @@ export default function AnalyticsPage() {
   const [revenue, setRevenue] = useState([]);
   const [byUniversity, setByUniversity] = useState([]);
   const [byCategory, setByCategory] = useState([]);
+  console.log(summary, revenue, byUniversity, byCategory);
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : "";
@@ -41,14 +43,14 @@ export default function AnalyticsPage() {
   }
 
   async function fetchSummary() {
-    const res = await fetch(`${API}/analytics/summary`, {
+    const res = await fetch(`${api}/analytics/summary`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setSummary(await res.json());
   }
 
   async function fetchRevenue() {
-    const res = await fetch(`${API}/analytics/revenue-monthly`, {
+    const res = await fetch(`${api}/analytics/revenue-monthly`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -56,7 +58,7 @@ export default function AnalyticsPage() {
   }
 
   async function fetchByUniversity() {
-    const res = await fetch(`${API}/analytics/applications-by-university`, {
+    const res = await fetch(`${api}/analytics/applications-by-university`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -64,7 +66,7 @@ export default function AnalyticsPage() {
   }
 
   async function fetchByCategory() {
-    const res = await fetch(`${API}/analytics/applications-by-category`, {
+    const res = await fetch(`${api}/analytics/applications-by-category`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
