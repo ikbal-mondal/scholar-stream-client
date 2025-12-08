@@ -35,6 +35,8 @@ import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications"
 import ApplicationFeedback from "../pages/Dashboard/Moderator/ApplicationFeedback";
 import AllApplications from "../pages/Dashboard/Admin/AllApplications";
 import NotFound from "../pages/Error/NotFound";
+import ContactUsPage from "../pages/ContactUsPage";
+import AboutUsPage from "../pages/AboutUsPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,8 @@ const router = createBrowserRouter([
       // AUTH
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "contact-us", element: <ContactUsPage /> },
+      { path: "about-us", element: <AboutUsPage /> },
 
       // Scholarship public pages
       { path: "scholarship/:id", element: <ScholarshipDetails /> },

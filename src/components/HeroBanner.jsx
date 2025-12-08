@@ -1,7 +1,12 @@
 import { FaGraduationCap, FaChalkboardTeacher, FaClock } from "react-icons/fa";
 import CustomDropdown from "../components/CustomDropdown";
+import AuthContext from "../context/AuthProvider";
+import { useContext } from "react";
+import { Link } from "react-router";
 
 const HeroBanner = () => {
+  const { backendUser, logout } = useContext(AuthContext) || {};
+  const role = backendUser?.role || null;
   return (
     <div className="relative w-full bg-[#faf8ff] pb-32 md:pb-40">
       {/* HERO SECTION */}
@@ -17,10 +22,33 @@ const HeroBanner = () => {
             Explore top scholarships from worldwide universities. Apply easily
             and boost your academic future.
           </p>
-
-          <button className="mt-6 px-6 py-3 bg-primary text-white rounded-md hover:bg-purple-700 transition shadow-md">
+          <Link
+            to="/all-scholarships"
+            className="mt-6 inline-block px-6 py-3 bg-primary text-white rounded-md hover:bg-purple-700 transition shadow-md"
+          >
             Explore Scholarships
-          </button>
+          </Link>
+          {backendUser && (
+            <div className="hidden lg:block">
+              <div
+                className="flex  mt-6 items-center gap-3 bg-gradient-to-r from-purple-50 to-purple-100 
+                  border border-purple-200 rounded-xl px-4 py-2 shadow-sm"
+              >
+                <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white text-lg font-bold">
+                  {backendUser?.name?.charAt(0)}
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">
+                    Welcome back, {backendUser?.name}
+                  </p>
+                  <p className="text-xs text-purple-700 font-medium">
+                    Role: {backendUser?.role || "User"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* RIGHT IMAGE */}

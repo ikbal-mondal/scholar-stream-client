@@ -62,7 +62,13 @@ export default function ApplicationSummary() {
         title: "Application Submitted!",
         text: "Would you like to pay now?",
         icon: "success",
+        // show custom text button View Appllications
+        //  got dahsbord for sse acpplications
+        // show pay Letter btn
+        // add here see application button
         showCancelButton: true,
+        cancelButtonText: "View Applications",
+
         confirmButtonText: "Pay Now",
       }).then(async (btn) => {
         if (btn.isConfirmed) {

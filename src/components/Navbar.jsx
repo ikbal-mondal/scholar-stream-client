@@ -21,7 +21,8 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Scholarships", path: "/all-scholarships" },
-    { name: "Reviews", path: "/reviews" },
+    { name: "About Us", path: "/about-us" },
+    { name: "Contact Us", path: "/contact-us" },
   ];
 
   const handleLogout = async () => {
@@ -69,10 +70,19 @@ const Navbar = () => {
             {backendUser ? (
               <div className="relative">
                 <button
-                  className="flex items-center gap-2 px-4 py-2 rounded-md border hover:bg-gray-100 transition"
+                  className="flex items-center gap-2 px-4 py-1 rounded-md border hover:bg-gray-100 transition"
                   onClick={() => setProfileOpen(!profileOpen)}
                 >
+                  <img
+                    src={
+                      backendUser?.photoURL ||
+                      "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                    }
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full object-cover border cursor-pointer"
+                  />
                   <span>{backendUser?.name?.split(" ")[0] || "User"}</span>
+
                   <FiChevronDown />
                 </button>
 
@@ -85,14 +95,6 @@ const Navbar = () => {
                       onClick={() => setProfileOpen(false)}
                     >
                       Dashboard
-                    </Link>
-
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      Profile
                     </Link>
 
                     <button
@@ -164,14 +166,6 @@ const Navbar = () => {
                     className="px-3 py-2 rounded-md bg-primary text-white text-center"
                   >
                     Dashboard
-                  </Link>
-
-                  <Link
-                    to="/profile"
-                    onClick={() => setOpen(false)}
-                    className="px-3 py-2 rounded-md border text-center"
-                  >
-                    Profile
                   </Link>
 
                   <button

@@ -180,17 +180,19 @@ const DashboardLayout = () => {
           }`}
         >
           <div className="px-6 py-5 border-b flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center text-primary font-extrabold">
-                SS
-              </div>
-              <div>
-                <div className="text-lg font-bold text-primary">Scholar</div>
-                <div className="text-sm font-semibold text-secondary">
-                  Stream
+            <Link to="/" className="cursor-pointer">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center text-primary font-extrabold">
+                  SS
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-primary">Scholar</div>
+                  <div className="text-sm font-semibold text-secondary">
+                    Stream
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
             <button onClick={() => setMobileOpen(false)}>
               <X />
             </button>
@@ -209,7 +211,7 @@ const DashboardLayout = () => {
               </Link>
             ))}
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <Link
                 to="/dashboard/manage-users"
                 className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50"
@@ -217,7 +219,7 @@ const DashboardLayout = () => {
                 <Users />
                 Manage Users
               </Link>
-            </div>
+            </div> */}
           </nav>
         </div>
       </div>

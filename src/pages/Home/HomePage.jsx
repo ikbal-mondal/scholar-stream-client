@@ -5,6 +5,10 @@ import CategoryGrid from "../../components/CategoryGrid";
 import FilterCarousel from "../../components/FilterCarousel";
 import HowItWorks from "../../components/HowItWorks";
 import FAQSection from "../../components/FAQSection";
+import CTABanner from "../../components/CTABanner";
+import DeadlineCountdown from "../../components/DeadlineCountdown";
+import VideoReviews from "../../components/VideoReviews";
+import GlobalSuccessMap from "../../components/GlobalSuccessMap";
 
 const HomePage = () => {
   return (
@@ -13,8 +17,12 @@ const HomePage = () => {
       <LatestScholarships></LatestScholarships>
       <CategoryGrid></CategoryGrid>
       <HowItWorks></HowItWorks>
+      <DeadlineCountdown></DeadlineCountdown>
       <FilterCarousel></FilterCarousel>
       <FAQSection></FAQSection>
+      <CTABanner></CTABanner>
+      <VideoReviews></VideoReviews>
+      <GlobalSuccessMap></GlobalSuccessMap>
     </div>
   );
 };
