@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import AuthContext from "./context/AuthProvider";
 import api from "./services/api";
+import { PlaySquare, Plus } from "lucide-react";
 
 export default function UserProfile() {
   const { backendUser, setBackendUserSafe } = useContext(AuthContext);
@@ -180,10 +181,10 @@ export default function UserProfile() {
                 {/* Floating Plus Button */}
                 <label
                   htmlFor="avatarInput"
-                  className="absolute bottom-1 right-1 bg-teal-500 text-white w-8 h-8 flex items-center 
-            justify-center rounded-full text-lg cursor-pointer shadow-md hover:bg-teal-600 transition"
+                  className="absolute bottom-1 right-1 bg-primary text-white w-8 h-8 flex items-center 
+            justify-center rounded-full text-lg cursor-pointer shadow-md hover:bg-secondary transition"
                 >
-                  +
+                  <Plus />
                 </label>
 
                 <input

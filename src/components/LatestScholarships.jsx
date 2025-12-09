@@ -51,51 +51,78 @@ const LatestScholarships = () => {
             {items.map((s) => (
               <div
                 key={s._id}
-                className="bg-white rounded-xl shadow hover:shadow-xl transition p-5 border"
+                className="
+    group bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200
+    hover:shadow-2xl hover:-translate-y-2 transition-all duration-300
+  "
               >
                 {/* Image */}
-                <div className="w-full h-40 mb-4 overflow-hidden rounded-lg">
+                <div className="relative w-full h-54 overflow-hidden">
                   <img
                     src={s.universityImage}
-                    className="w-full h-full object-cover hover:scale-105 transition"
                     alt=""
+                    className="
+        w-full h-full object-cover 
+        group-hover:scale-110 transition duration-500
+      "
                   />
+
+                  {/* Gradient Overlay */}
+                  <div
+                    className="
+        absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent
+        opacity-0 group-hover:opacity-100 transition duration-300
+      "
+                  ></div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-xl font-bold mb-1 text-gray-800 line-clamp-2">
-                  {s.scholarshipName}
-                </h3>
+                {/* Content */}
+                <div className="p-5">
+                  {/* Title */}
+                  <h3
+                    className="
+        text-lg font-bold mb-1 text-gray-900 line-clamp-2 
+        group-hover:text-purple-600 transition
+      "
+                  >
+                    {s.scholarshipName}
+                  </h3>
 
-                <div className="text-gray-500 text-sm mb-3">
-                  {s.universityName}
+                  <p className="text-gray-500 text-sm mb-3">
+                    {s.universityName}
+                  </p>
+
+                  {/* Highlights */}
+                  <div className="space-y-2 text-sm">
+                    <p className="flex items-center gap-2 text-gray-700">
+                      <GraduationCap size={16} className="text-purple-600" />
+                      {s.degree || "—"}
+                    </p>
+
+                    <p className="flex items-center gap-2 text-gray-700">
+                      <MapPin size={16} className="text-purple-600" />
+                      {s.universityCity}, {s.universityCountry}
+                    </p>
+
+                    <p className="flex items-center gap-2 text-gray-700">
+                      <Calendar size={16} className="text-purple-600" />
+                      Deadline: {formatDate(s.applicationDeadline)}
+                    </p>
+                  </div>
+
+                  {/* Button */}
+                  <a
+                    href={`/scholarship/${s._id}`}
+                    className="
+        mt-5 block text-center w-full py-2.5 rounded-xl font-semibold
+        bg-gradient-to-r from-purple-600 to-primary
+        text-white shadow-md hover:shadow-lg 
+        hover:opacity-90 transition-all duration-300
+      "
+                  >
+                    View Details
+                  </a>
                 </div>
-
-                {/* Info rows */}
-                <div className="space-y-2 text-sm">
-                  <p className="flex items-center gap-2">
-                    <GraduationCap size={16} className="text-primary" />
-                    {s.degree || "—"}
-                  </p>
-
-                  <p className="flex items-center gap-2">
-                    <MapPin size={16} className="text-primary" />
-                    {s.universityCity}, {s.universityCountry}
-                  </p>
-
-                  <p className="flex items-center gap-2">
-                    <Calendar size={16} className="text-primary" />
-                    Deadline: {formatDate(s.applicationDeadline)}
-                  </p>
-                </div>
-
-                {/* Button */}
-                <a
-                  href={`/scholarship/${s._id}`}
-                  className="mt-4 inline-flex items-center justify-center w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
-                >
-                  View Details
-                </a>
               </div>
             ))}
           </div>
