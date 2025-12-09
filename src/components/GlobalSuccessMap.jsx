@@ -8,11 +8,11 @@ import {
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { motion } from "framer-motion";
 
-// 🌍 World map URL
+//  World map URL
 const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
-// ⭐ Student success data
+//  Student success data
 const successData = [
   {
     id: 1,
@@ -517,7 +517,7 @@ export default function GlobalSuccessMap() {
 
                 return (
                   <g key={country}>
-                    {/* Render ALL lines for all students of this country */}
+                   
                     {group.students.map((stu) => (
                       <Line
                         key={stu.id}

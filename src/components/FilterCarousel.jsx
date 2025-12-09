@@ -9,7 +9,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// FAKE JSON DATA
 const filterTags = [
   {
     id: 1,

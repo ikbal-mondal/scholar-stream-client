@@ -103,7 +103,8 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-secondary mt-10 pt-5 text-center">
           <p className="text-sm opacity-80">
-            © {new Date().getFullYear()} Scholar Stream. All Rights Reserved.
+            © {new Date().getFullYear()} Scholar Stream. All Rights Reserved
+            (Ikbal Mondal).
           </p>
         </div>
       </div>

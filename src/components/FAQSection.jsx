@@ -10,7 +10,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-// ---------------- SHORT 50-WORD ANSWERS ---------------- //
 const faqData = [
   {
     id: 1,

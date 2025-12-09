@@ -6,7 +6,7 @@ const CustomDropdown = ({ label, options = [], onSelect }) => {
   const [value, setValue] = useState(label);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  
   useEffect(() => {
     function handler(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
