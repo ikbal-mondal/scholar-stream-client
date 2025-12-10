@@ -124,12 +124,12 @@ const Login = () => {
         {/* GOOGLE BUTTON */}
         <button
           onClick={handleGoogle}
-          className="w-full py-3 border border-gray-300 rounded-full flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+          className="w-full py-2 cursor-pointer border border-gray-300 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-100 transition"
         >
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVZEZ6fa7bPwCI4HE5583rhd3qiFNmf6kiPg&s"
             alt="google"
-            className="w-5"
+            className="w-12"
           />
           Continue with Google
         </button>

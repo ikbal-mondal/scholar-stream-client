@@ -367,7 +367,7 @@ const groupedData = groupByCountry(successData);
 
 export default function GlobalSuccessMap() {
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-100 to-gray-200">
+    <section className="py-6 ">
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           {/* SECTION HEADER */}
@@ -495,7 +495,7 @@ export default function GlobalSuccessMap() {
       <div className="max-w-7xl mx-auto px-4">
         {/* MAP */}
         <div className="flex justify-center">
-          <div className="w-full max-w-5xl rounded-2xl bg-white shadow-xl p-6">
+          <div className="w-full max-w-7xl rounded-2xl bg-white  p-6">
             <ComposableMap projectionConfig={{ scale: 160 }}>
               {/* WORLD MAP */}
               <Geographies geography={geoUrl}>
@@ -517,7 +517,6 @@ export default function GlobalSuccessMap() {
 
                 return (
                   <g key={country}>
-                   
                     {group.students.map((stu) => (
                       <Line
                         key={stu.id}

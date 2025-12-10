@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   /* ------------------------------------------------------------------
-      🔥 EXCHANGE FIREBASE TOKEN WITH BACKEND
+       EXCHANGE FIREBASE TOKEN WITH BACKEND
   ------------------------------------------------------------------ */
   const exchangeWithBackend = async (idToken) => {
     try {

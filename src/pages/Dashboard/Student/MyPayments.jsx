@@ -248,86 +248,150 @@ export default function MyPayments() {
           onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
+      {/* TABLE WRAPPER */}
+      <div className="w-full">
+        {/* DESKTOP & TABLET TABLE */}
+        <div className="hidden md:block overflow-x-auto rounded-xl shadow-lg border bg-white">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="p-3 text-left whitespace-nowrap">Student</th>
+                <th className="p-3 text-left whitespace-nowrap">University</th>
+                <th className="p-3 text-left whitespace-nowrap">Scholarship</th>
+                <th className="p-3 text-left whitespace-nowrap">Amount</th>
+                <th className="p-3 text-left whitespace-nowrap">Paid On</th>
+                <th className="p-3 text-left whitespace-nowrap">Actions</th>
+              </tr>
+            </thead>
 
-      {/* TABLE */}
-      <div className="overflow-x-auto rounded-xl shadow-lg border bg-white">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="p-3 text-left">Student</th>
-              <th className="p-3 text-left">University</th>
-              <th className="p-3 text-left">Scholarship</th>
-              <th className="p-3 text-left">Amount</th>
-              <th className="p-3 text-left">Paid On</th>
-              <th className="p-3 text-left">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filtered.map((p) => (
-              <tr key={p._id} className="border-t hover:bg-gray-50">
-                {/* Student */}
-                <td className="p-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={backendUser?.photoURL}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-semibold">{p.userName}</p>
-                      <p className="text-gray-500 text-xs">{p.userEmail}</p>
+            <tbody>
+              {filtered.map((p) => (
+                <tr key={p._id} className="border-t hover:bg-gray-50">
+                  <td className="p-3 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={backendUser?.photoURL}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="font-semibold">{p.userName}</p>
+                        <p className="text-gray-500 text-xs">{p.userEmail}</p>
+                      </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                {/* University */}
-                <td className="p-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={p.universityImage}
-                      className="w-14 h-10 rounded object-cover border"
-                    />
-                    <div>
-                      <p className="font-semibold">{p.universityName}</p>
-                      <p className="text-gray-500 text-xs">
-                        {p.universityCountry}
-                      </p>
+                  <td className="p-3 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={p.universityImage}
+                        className="w-14 h-10 rounded object-cover border"
+                      />
+                      <div className="min-w-[100px]">
+                        <p className="font-semibold">{p.universityName}</p>
+                        <p className="text-gray-500 text-xs">
+                          {p.universityCountry}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                <td className="p-3">{p.scholarshipName}</td>
+                  <td className="p-3 whitespace-nowrap">{p.scholarshipName}</td>
+                  <td className="p-3 whitespace-nowrap font-bold text-primary">
+                    ${p.totalAmount}
+                  </td>
 
-                <td className="p-3 font-bold text-primary">${p.totalAmount}</td>
+                  <td className="p-3 whitespace-nowrap">
+                    {new Date(
+                      p.paymentInfo?.paidAt ||
+                        p.paymentDate ||
+                        p.applicationDate
+                    ).toLocaleString()}
+                  </td>
 
-                <td className="p-3">
+                  <td className="p-3 whitespace-nowrap flex gap-2">
+                    <button
+                      onClick={() => setViewItem(p)}
+                      className="px-3 py-1 border rounded-lg"
+                    >
+                      <Eye size={16} /> View
+                    </button>
+
+                    <button
+                      onClick={() => downloadInvoice(p)}
+                      className="px-3 py-1 border rounded-lg"
+                    >
+                      <Download size={16} /> Invoice
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* MOBILE CARD VIEW */}
+        <div className="md:hidden space-y-4">
+          {filtered.map((p) => (
+            <div key={p._id} className="border rounded-xl p-4 shadow bg-white">
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src={backendUser?.photoURL}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div>
+                  <p className="font-semibold">{p.userName}</p>
+                  <p className="text-gray-500 text-xs">{p.userEmail}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src={p.universityImage}
+                  className="w-20 h-14 rounded object-cover border"
+                />
+                <div>
+                  <p className="font-semibold">{p.universityName}</p>
+                  <p className="text-gray-500 text-xs">{p.universityCountry}</p>
+                </div>
+              </div>
+
+              <div className="space-y-1 text-sm mb-4">
+                <p>
+                  <strong>Scholarship:</strong> {p.scholarshipName}
+                </p>
+                <p>
+                  <strong>Amount:</strong>
+                  <span className="text-primary font-bold">
+                    {" "}
+                    ${p.totalAmount}
+                  </span>
+                </p>
+                <p>
+                  <strong>Paid On:</strong>{" "}
                   {new Date(
                     p.paymentInfo?.paidAt || p.paymentDate || p.applicationDate
                   ).toLocaleString()}
-                </td>
+                </p>
+              </div>
 
-                {/* ACTIONS */}
-                <td className="p-3 flex gap-3">
-                  <button
-                    onClick={() => setViewItem(p)}
-                    className="flex items-center gap-1 px-3 py-1 border rounded-lg"
-                  >
-                    <Eye size={16} /> View
-                  </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setViewItem(p)}
+                  className="flex-1 px-3 py-2 border rounded-lg"
+                >
+                  <Eye size={16} /> View
+                </button>
 
-                  <button
-                    onClick={() => downloadInvoice(p)}
-                    className="flex items-center gap-1 px-3 py-1 border rounded-lg"
-                    disabled={downloading}
-                  >
-                    {downloading ? "Processing..." : <Download size={16} />}
-                    {downloading ? "Generating..." : "Invoice"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <button
+                  onClick={() => downloadInvoice(p)}
+                  className="flex-1 px-3 py-2 border rounded-lg"
+                >
+                  <Download size={16} /> Invoice
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* MODAL */}

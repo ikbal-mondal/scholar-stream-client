@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 import AuthContext from "../../context/AuthProvider";
 
 const Register = () => {
-  const { register, login } = useContext(AuthContext);
+  const { register, login, signInWithGoogle } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     name: "",
@@ -41,6 +41,16 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // google sing in
+  const handleGoogle = async () => {
+    try {
+      await signInWithGoogle();
+      Swal.fire("Welcome!", "Logged in with Google", "success");
+      navigate("/");
+    } catch (err) {
+      Swal.fire("Error", err.message, "error");
+    }
+  };
   /* --------------------------- CLOUDINARY UPLOAD -------------------------- */
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
@@ -135,11 +145,29 @@ const Register = () => {
   /* ------------------------------- UI RETURN ------------------------------- */
   return (
     <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-10 mt-10">
-      <h2 className="text-3xl font-bold text-primary mb-6">
+      {/* GOOGLE BUTTON */}
+      <button
+        onClick={handleGoogle}
+        className="w-full cursor-pointer py-1 border border-gray-300 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+      >
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVZEZ6fa7bPwCI4HE5583rhd3qiFNmf6kiPg&s"
+          alt="google"
+          className="w-12"
+        />
+        Continue with Google
+      </button>
+      <div className="flex items-center my-6">
+        <div className="flex-grow h-px bg-gray-300"></div>
+        <span className="mx-4 text-gray-500">or</span>
+        <div className="flex-grow h-px bg-gray-300"></div>
+      </div>
+      <h2 className="text-3xl font-bold text-primary text-center mb-6">
         Create Your <span className="text-secondary">Account</span>
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        <label> Your Full Name:</label>
         <input
           name="name"
           type="text"
@@ -149,7 +177,7 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-
+        <label> Your Email:</label>
         <input
           name="email"
           type="email"
@@ -159,7 +187,7 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-
+        <label> Type Password:</label>
         <input
           name="password"
           type="password"
@@ -169,6 +197,7 @@ const Register = () => {
           onChange={handleChange}
           required
         />
+        <label> Select Your Country:</label>
 
         <select
           name="country"
@@ -184,6 +213,7 @@ const Register = () => {
             </option>
           ))}
         </select>
+        <label> Phone Number:</label>
 
         <input
           name="phone"
@@ -194,7 +224,7 @@ const Register = () => {
           onChange={handleChange}
           required
         />
-
+        <label> Select Your Date Of Birth:</label>
         <input
           name="dob"
           type="date"
@@ -220,7 +250,7 @@ const Register = () => {
             />
 
             <div className="px-4 py-2 bg-primary text-white rounded-md inline-block">
-              Upload Photo
+              Upload Your Photo
             </div>
           </label>
 
