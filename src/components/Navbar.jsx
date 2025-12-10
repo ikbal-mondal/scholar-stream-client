@@ -174,7 +174,13 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
-
+                  <Link
+                    to="/my-profile"
+                    className="px-3 py-2 rounded-md bg-primary  text-white text-center"
+                    onClick={() => setProfileOpen(false)}
+                  >
+                    My Profile
+                  </Link>
                   <button
                     onClick={() => {
                       logout();
